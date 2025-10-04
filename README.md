@@ -57,7 +57,11 @@ O preset define a resolução e a qualidade da compactação das imagens no PDF:
   python compress_pdf.py original.pdf saida.pdf
   
 - Compressão extrema (screen):
-  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf --preset printer
+  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf -p screen
 
 - Compressão para impressão (printer):
-  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf --preset printer
+  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf -p printer
+
+- Compressão com a máxima preservação da qualidade original (prepress)
+  python compress_pdf.py entrada.pdf saida.pdf -p prepress
+
