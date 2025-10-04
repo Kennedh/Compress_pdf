@@ -1,7 +1,7 @@
 # 🚀 Compressor de PDF com Ghostscript
 
 ## 📖 Visão Geral
-Este script em **Python** uma funcionalidade simples e robusta para a compressão de arquivos **PDF** utilizando a ferramenta de código aberto **Ghostscript (GS)**.  
+Este script em **Python** é uma funcionalidade simples e robusta para a compressão de arquivos **PDF** utilizando a ferramenta de código aberto **Ghostscript (GS)**.  
 Ele permite aplicar diferentes níveis de compressão (*presets*) para otimizar o tamanho do arquivo para variados cenários de uso (tela, e-book, impressão, etc.).
 
 ---
