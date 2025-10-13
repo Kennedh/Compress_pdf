@@ -65,4 +65,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     compress_pdf(args.input_file, args.output_file, args.preset)
 
-# Uso via cmd/Power Shell: python compressor_pdf.py entrada.pdf saida.pdf -p printer
+# Uso via cmd/Power Shell: python compress_pdf.py entrada.pdf saida.pdf -p printer
