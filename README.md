@@ -25,6 +25,12 @@ O script oferece uma forma simples de aplicar os presets do Ghostscript sem prec
 - Tratamento de caminhos de entrada e saída
 - Integração do Python com processo externo por `subprocess`
 
+## 📸 Demonstração
+
+### Compressão via terminal
+
+![Compress PDF - terminal](assets/screenshots/01-terminal-compressao.png)
+
 ## 🛠️ Tecnologias
 
 - Python 3
