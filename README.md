@@ -1,67 +1,128 @@
-# 🚀 Compressor de PDF com Ghostscript
+# Compressor de PDF com Python e Ghostscript
 
-## 📖 Visão Geral
-Este script em **Python** é uma funcionalidade simples e robusta para a compressão de arquivos **PDF** utilizando a ferramenta de código aberto **Ghostscript (GS)**.  
-Ele permite aplicar diferentes níveis de compressão (*presets*) para otimizar o tamanho do arquivo para variados cenários de uso (tela, e-book, impressão, etc.).
+> Utilitário em Python para reduzir o tamanho de arquivos PDF usando diferentes níveis de compressão do Ghostscript.
 
----
+Este projeto automatiza a compressão de PDFs por linha de comando e permite escolher o equilíbrio entre **tamanho do arquivo e qualidade visual** de acordo com o cenário de uso.
+
+## 🎯 O problema que resolve
+
+PDFs grandes podem dificultar:
+
+- envio por e-mail;
+- upload em sistemas com limite de tamanho;
+- compartilhamento;
+- armazenamento;
+- publicação na web.
+
+O script oferece uma forma simples de aplicar os presets do Ghostscript sem precisar montar manualmente todos os parâmetros de execução.
+
+## ✨ Funcionalidades
+
+- Compressão de arquivos PDF
+- Seleção de diferentes níveis de qualidade
+- Execução por terminal
+- Compatibilidade com Windows, Linux e macOS, desde que o Ghostscript esteja instalado
+- Tratamento de caminhos de entrada e saída
+- Integração do Python com processo externo por `subprocess`
 
 ## 🛠️ Tecnologias
-- **Linguagem:** Python 3.x  
-- **Módulos Nativos:** `argparse`, `subprocess`, `os`, `sys`  
-- **Requisito Principal:** Ghostscript deve estar instalado no sistema e acessível via `PATH`.
+
+- Python 3
+- Ghostscript
+- argparse
+- subprocess
+- os
+- sys
+
+## 📦 Requisito
+
+O **Ghostscript** deve estar instalado no computador e acessível pelo sistema.
+
+### Linux — Debian/Ubuntu
+
+```bash
+sudo apt-get install ghostscript
+```
+
+### macOS — Homebrew
+
+```bash
+brew install ghostscript
+```
+
+### Windows
+
+Instale o Ghostscript pelo site oficial e garanta que o executável esteja disponível no `PATH` do sistema.
+
+## 📥 Instalação do projeto
+
+```bash
+git clone https://github.com/Kennedh/Compress_pdf.git
+cd Compress_pdf
+```
+
+O script utiliza módulos nativos do Python; a principal dependência externa é o Ghostscript.
+
+## ▶️ Como usar
+
+Sintaxe:
+
+```bash
+python compress_pdf.py ARQUIVO_ENTRADA ARQUIVO_SAIDA [-p PRESET]
+```
+
+Exemplo com o preset padrão:
+
+```bash
+python compress_pdf.py original.pdf comprimido.pdf
+```
+
+Exemplo priorizando redução de tamanho:
+
+```bash
+python compress_pdf.py original.pdf comprimido.pdf -p screen
+```
+
+Exemplo priorizando impressão:
+
+```bash
+python compress_pdf.py original.pdf comprimido.pdf -p printer
+```
+
+## ⚙️ Presets disponíveis
+
+| Preset | Característica | Uso recomendado |
+|---|---|---|
+| `screen` | Maior compressão, menor resolução | Visualização em tela e anexos |
+| `ebook` | Equilíbrio entre qualidade e tamanho | Uso geral e distribuição digital |
+| `printer` | Maior qualidade | Impressão convencional |
+| `prepress` | Maior fidelidade | Fluxos de impressão profissional |
+
+O preset padrão é `ebook`.
+
+## 🧠 Como funciona
+
+O Python recebe os argumentos informados pelo usuário e monta a execução do Ghostscript por meio de `subprocess`.
+
+Dessa forma, o projeto funciona como uma camada de automação: o usuário fornece o PDF, escolhe o perfil de compressão e recebe um novo arquivo de saída.
+
+## 💡 O que este projeto demonstra
+
+- Automação de tarefas com Python
+- Integração com programas externos
+- Uso de argumentos de linha de comando
+- Manipulação de caminhos e arquivos
+- Criação de utilitários para problemas reais
+
+## 🚀 Possíveis evoluções
+
+- Interface gráfica
+- Processamento de vários PDFs em lote
+- Comparação automática do tamanho antes e depois
+- Validação mais detalhada do PDF de entrada
+- Presets personalizados
+- Empacotamento como executável
 
 ---
 
-## 📦 Instalação do Requisito (Ghostscript)
-Para que este script funcione, você deve instalar o Ghostscript no seu sistema operacional:
-
-| Sistema Operacional      | Comando ou Ação                                                                 |
-|---------------------------|--------------------------------------------------------------------------------|
-| **Linux (Debian/Ubuntu)** | `sudo apt-get install ghostscript`                                             |
-| **macOS (via Homebrew)**  | `brew install ghostscript`                                                     |
-| **Windows**               | Baixe o instalador oficial no site do [Ghostscript](https://ghostscript.com/releases/gsdnld.html) e certifique-se de adicionar o diretório **bin** ao seu `PATH`. |
-
----
-
-## 🚀 Uso
-O script é executado via linha de comando (terminal/cmd/PowerShell).
-
-### Sintaxe
-
-python compress_pdf.py <ARQUIVO_ENTRADA> <ARQUIVO_SAIDA> [-p PRESET]
-
-
-### Argumentos e Opções
-
-| Argumento/Opção      | Descrição                                         |
-|---------------------|--------------------------------------------------|
-| `<ARQUIVO_ENTRADA>`  | Caminho completo do PDF a ser comprimido (ex: documento_grande.pdf) |
-| `<ARQUIVO_SAIDA>`    | Caminho e nome do arquivo comprimido gerado (ex: documento_pequeno.pdf) |
-| `-p` ou `--preset`   | Nível de compressão do Ghostscript (opcional, padrão: ebook) |
-
-## Presets de Compressão (`-p`)
-
-O preset define a resolução e a qualidade da compactação das imagens no PDF:
-
-| Preset    | Descrição                                  | Uso Ideal                                     |
-|-----------|--------------------------------------------|-----------------------------------------------|
-| screen    | Resolução de 72 dpi. Compressão máxima.    | Visualização rápida, anexos para e-mail.      |
-| ebook     | Resolução de 150 dpi. Bom equilíbrio.      | Distribuição geral, sites, armazenamento. (Padrão) |
-| printer   | Resolução de 300 dpi. Alta qualidade.      | PDFs para impressoras padrão.                  |
-| prepress  | Maior fidelidade, qualidade preservada.    | Impressão gráfica profissional.                |
-
-## Exemplos de Execução
-
-- Compressão padrão (ebook):
-  python compress_pdf.py original.pdf saida.pdf
-  
-- Compressão extrema (screen):
-  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf -p screen
-
-- Compressão para impressão (printer):
-  python compress_pdf.py relatorio.pdf relatorio_imprimir.pdf -p printer
-
-- Compressão com a máxima preservação da qualidade original (prepress)
-  python compress_pdf.py entrada.pdf saida.pdf -p prepress
-
+Desenvolvido por [Kennedh](https://github.com/Kennedh).
