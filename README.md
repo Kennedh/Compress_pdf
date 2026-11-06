@@ -23,10 +23,10 @@ Os pacotes prontos estão em [Releases](https://github.com/Kennedh/Compress_pdf/
 
 | Sistema | Pacote |
 |---|---|
-| Windows 64 bits | `CompressPDF-v1.0.0-windows-x64.zip` |
-| Linux 64 bits | `CompressPDF-v1.0.0-linux-x64.tar.gz` |
-| macOS Intel | `CompressPDF-v1.0.0-macos-x64.zip` |
-| macOS Apple Silicon | `CompressPDF-v1.0.0-macos-arm64.zip` |
+| Windows 64 bits | `CompressPDF-v1.0.1-windows-x64.zip` |
+| Linux 64 bits | `CompressPDF-v1.0.1-linux-x64.tar.gz` |
+| macOS Intel | `CompressPDF-v1.0.1-macos-x64.zip` |
+| macOS Apple Silicon | `CompressPDF-v1.0.1-macos-arm64.zip` |
 
 No Windows, extraia todo o ZIP e abra `CompressPDF/CompressPDF.exe`. Mantenha a pasta `_internal` ao lado do executável.
 
@@ -154,17 +154,17 @@ python -m pip install -r requirements-build.txt
 python scripts/build_release.py
 ```
 
-O script lê `CompressPDF.spec`, gera o aplicativo em `dist/`, executa o teste do aplicativo empacotado e produz o arquivo, checksum e relatório em `release/`. A versão está em `app_version.py`.
+O script lê `CompressPDF.spec`, gera o aplicativo em `dist/`, executa o teste do aplicativo empacotado e produz o arquivo, checksum e relatório em `release/`. A versão está em `app_version.py`. O build usa PyMuPDF 2.1 em Windows, Linux e Apple Silicon, e 1.28.2 no macOS Intel, que dispõe de pacote nativo para essa arquitetura.
 
 O teste empacotado inicializa a interface, comprime um PDF com texto e duas páginas, verifica o resultado e confirma o tratamento de um PDF inválido. A compressão continua em um processo separado, inclusive dentro do executável.
 
-O workflow `.github/workflows/release.yml` executa os testes e builds em Windows, Linux e macOS Intel/Apple Silicon. Ao receber uma tag `v*`, ele publica todos os arquivos juntos somente se os quatro builds passarem. A execução manual gera artefatos para conferência sem publicar um release.
+O workflow `.github/workflows/release.yml` executa os testes e builds em Windows, Linux e macOS Intel/Apple Silicon. Ao receber uma tag `v*`, ele publica todos os arquivos juntos somente se os quatro builds passarem. A execução manual em uma branch gera artefatos para conferência; selecionar uma tag `v*` também publica o release.
 
 Para uma próxima versão, atualize `app_version.py` e `RELEASE_NOTES.md`, faça o commit e envie a tag correspondente:
 
 ```bash
-git tag v1.0.1
-git push origin master v1.0.1
+git tag v1.0.2
+git push origin master v1.0.2
 ```
 
 Os avisos dos componentes distribuídos estão em `THIRD_PARTY_NOTICES.md`.

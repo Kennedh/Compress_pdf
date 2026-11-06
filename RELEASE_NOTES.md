@@ -7,10 +7,10 @@ Compressão de PDFs com interface desktop em português, processamento em lote e
 
 | Sistema | Arquivo |
 |---|---|
-| Windows 64 bits | `CompressPDF-v1.0.0-windows-x64.zip` |
-| Linux 64 bits | `CompressPDF-v1.0.0-linux-x64.tar.gz` |
-| macOS Intel | `CompressPDF-v1.0.0-macos-x64.zip` |
-| macOS Apple Silicon | `CompressPDF-v1.0.0-macos-arm64.zip` |
+| Windows 64 bits | `CompressPDF-v1.0.1-windows-x64.zip` |
+| Linux 64 bits | `CompressPDF-v1.0.1-linux-x64.tar.gz` |
+| macOS Intel | `CompressPDF-v1.0.1-macos-x64.zip` |
+| macOS Apple Silicon | `CompressPDF-v1.0.1-macos-arm64.zip` |
 
 **Windows:** extraia o ZIP inteiro e abra `CompressPDF/CompressPDF.exe`. Mantenha a pasta `_internal` junto do executável.
 

@@ -1,3 +1,5 @@
 -r requirements.txt
-PyMuPDF==2.1
+# PyMuPDF 2.1 não oferece wheel macOS Intel; 1.28.2 mantém a API utilizada.
+PyMuPDF==2.1; sys_platform != "darwin" or platform_machine != "x86_64"
+PyMuPDF==1.28.2; sys_platform == "darwin" and platform_machine == "x86_64"
 PyInstaller==6.20.0
