@@ -23,10 +23,10 @@ Os pacotes prontos estão em [Releases](https://github.com/Kennedh/Compress_pdf/
 
 | Sistema | Pacote |
 |---|---|
-| Windows 64 bits | `CompressPDF-v1.0.2-windows-x64.zip` |
-| Linux 64 bits | `CompressPDF-v1.0.2-linux-x64.tar.gz` |
-| macOS Intel | `CompressPDF-v1.0.2-macos-x64.zip` |
-| macOS Apple Silicon | `CompressPDF-v1.0.2-macos-arm64.zip` |
+| Windows 64 bits | `CompressPDF-v1.0.3-windows-x64.zip` |
+| Linux 64 bits | `CompressPDF-v1.0.3-linux-x64.tar.gz` |
+| macOS Intel | `CompressPDF-v1.0.3-macos-x64.zip` |
+| macOS Apple Silicon | `CompressPDF-v1.0.3-macos-arm64.zip` |
 
 No Windows, extraia todo o ZIP e abra `CompressPDF/CompressPDF.exe`. Mantenha a pasta `_internal` ao lado do executável.
 
@@ -163,8 +163,8 @@ O workflow `.github/workflows/release.yml` executa os testes e builds em Windows
 Para uma próxima versão, atualize `app_version.py` e `RELEASE_NOTES.md`, faça o commit e envie a tag correspondente:
 
 ```bash
-git tag v1.0.3
-git push origin master v1.0.3
+git tag v1.0.4
+git push origin master v1.0.4
 ```
 
 Os avisos dos componentes distribuídos estão em `THIRD_PARTY_NOTICES.md`.
