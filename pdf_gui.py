@@ -9,6 +9,8 @@ import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
+from app_version import VERSION
+
 from compress_pdf import (
     PRESETS, CompressionCancelled, CompressionError,
     compress_pdf, check_pymupdf, format_size, validate_pdf,
@@ -35,7 +37,7 @@ class PDFCompressorApp:
         self.size_text = tk.StringVar(value="0,0 B")
         self.savings_text = tk.StringVar(value="0,0 B")
         self.profile_text = tk.StringVar(value=PRESETS["ebook"][1])
-        self.root.title("Compress PDF")
+        self.root.title(f"Compress PDF {VERSION}")
         self.root.geometry("1080x780")
         self.root.minsize(860, 700)
         self.root.configure(bg="#f3f6fa")

@@ -12,6 +12,8 @@ import sys
 import tempfile
 import time
 
+from app_version import VERSION
+
 
 PRESETS = {
     "screen": ("Máxima compressão", "72 dpi · arquivos menores para visualização em tela"),
@@ -117,6 +119,20 @@ def _run_process(command, cancel_event, timeout):
 
 def _run_pymupdf(source, target, preset, cancel_event, timeout):
     # Um processo permite interromper chamadas nativas e mantém o Tkinter responsivo.
+    if getattr(sys, "frozen", False):
+        error_log = Path(target).with_suffix(".error.log")
+        command = [sys.executable, "--pdf-worker", str(source), str(target), preset, str(error_log)]
+        try:
+            _run_process(command, cancel_event, timeout)
+        except CompressionCancelled:
+            raise
+        except CompressionError as exc:
+            if error_log.is_file():
+                raise CompressionError(error_log.read_text(encoding="utf-8")[-4000:]) from exc
+            raise
+        finally:
+            error_log.unlink(missing_ok=True)
+        return
     command = [
         sys.executable, "-X", "utf8",
         str(Path(__file__).with_name("pdf_engine.py")),
@@ -181,10 +197,20 @@ def compress_pdf(input_path, output_path, preset="ebook", *, overwrite=False,
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "--pdf-worker":
+        from pdf_engine import main as worker_main
+        return worker_main(argv[1:])
+    if argv and argv[0] == "--smoke-test":
+        from release_smoke import run
+        if len(argv) != 2:
+            return 2
+        return run(argv[1])
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(errors="backslashreplace")
     parser = argparse.ArgumentParser(description="Compacta PDFs com PyMuPDF. Sem argumentos, abre a interface.")
+    parser.add_argument("--version", action="version", version=f"Compress PDF {VERSION}")
     parser.add_argument("input_file", nargs="?", help="PDF de entrada.")
     parser.add_argument("output_file", nargs="?", help="PDF de saída.")
     parser.add_argument("-p", "--preset", choices=PRESETS, default="ebook", help="Qualidade (padrão: ebook).")

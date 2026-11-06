@@ -62,6 +62,32 @@ class FileFixture(unittest.TestCase):
 
 
 class SafetyTests(FileFixture):
+    def test_frozen_worker_reports_error_and_removes_temporary_files(self):
+        def fail(command, *_args):
+            self.assertEqual(command[1], "--pdf-worker")
+            Path(command[3]).write_bytes(b"partial")
+            Path(command[5]).write_text("Erro no worker empacotado", encoding="utf-8")
+            raise CompressionError("processo falhou")
+        with patch.object(sys, "frozen", True, create=True), patch(
+            "compress_pdf._run_process", side_effect=fail
+        ):
+            with self.assertRaisesRegex(CompressionError, "Erro no worker empacotado"):
+                compress_pdf(self.source, self.target)
+        self.assertFalse(self.target.exists())
+        self.assertEqual(list(self.folder.glob(".compress-*")), [])
+
+    def test_frozen_worker_keeps_cancellation_and_removes_error_report(self):
+        def cancel(command, *_args):
+            Path(command[5]).write_text("erro anterior", encoding="utf-8")
+            raise CompressionCancelled("cancelado")
+        with patch.object(sys, "frozen", True, create=True), patch(
+            "compress_pdf._run_process", side_effect=cancel
+        ):
+            with self.assertRaises(CompressionCancelled):
+                compress_pdf(self.source, self.target)
+        self.assertFalse(self.target.exists())
+        self.assertEqual(list(self.folder.glob(".compress-*")), [])
+
     def test_original_cannot_be_overwritten_even_with_force(self):
         original = self.source.read_bytes()
         with self.assertRaises(CompressionError):
@@ -163,6 +189,16 @@ class SafetyTests(FileFixture):
 
 @unittest.skipIf(pymupdf is None, "PyMuPDF indisponível")
 class PyMuPDFIntegrationTests(FileFixture):
+    def test_worker_error_is_reported_without_a_console(self):
+        from pdf_engine import main as worker_main
+        self.source.write_bytes(b"%PDF-1.4\ninvalid document")
+        report = self.folder / "error.log"
+        with patch.object(sys, "stderr", None):
+            code = worker_main([str(self.source), str(self.target), "ebook", str(report)])
+        self.assertEqual(code, 1)
+        self.assertIn("processar o PDF", report.read_text(encoding="utf-8"))
+        self.assertFalse(self.target.exists())
+
     def test_real_compression_all_presets_and_output_readability(self):
         self.source.write_bytes(make_pdf(image=True))
         original = self.source.read_bytes()

@@ -17,6 +17,25 @@ Compressor de PDFs com interface desktop em português e linha de comando. Usa o
 - Compressão com PyMuPDF, instalado pelo pip.
 - Uso pelo terminal preservado.
 
+## Baixar o aplicativo
+
+Os pacotes prontos estão em [Releases](https://github.com/Kennedh/Compress_pdf/releases/latest). Eles incluem Python, Tkinter e PyMuPDF.
+
+| Sistema | Pacote |
+|---|---|
+| Windows 64 bits | `CompressPDF-v1.0.0-windows-x64.zip` |
+| Linux 64 bits | `CompressPDF-v1.0.0-linux-x64.tar.gz` |
+| macOS Intel | `CompressPDF-v1.0.0-macos-x64.zip` |
+| macOS Apple Silicon | `CompressPDF-v1.0.0-macos-arm64.zip` |
+
+No Windows, extraia todo o ZIP e abra `CompressPDF/CompressPDF.exe`. Mantenha a pasta `_internal` ao lado do executável.
+
+No macOS, extraia e abra `CompressPDF.app`. O pacote usa assinatura local, sem notarização da Apple; a primeira abertura pode exigir autorização em Privacidade e Segurança.
+
+No Linux, extraia e execute `./CompressPDF/CompressPDF` em uma sessão gráfica. O pacote é construído no Ubuntu 22.04 e depende de bibliotecas de sistema compatíveis.
+
+As somas SHA-256 acompanham o release em `SHA256SUMS.txt`. Os relatórios `*.build.json` registram os testes dos aplicativos empacotados.
+
 ## Requisitos e instalação
 
 - Python 3.11 ou superior com Tkinter.
@@ -125,3 +144,27 @@ O PyMuPDF trabalha em um processo Python separado por arquivo. Isso permite canc
 
 
 Desenvolvido por [Kennedh](https://github.com/Kennedh).
+
+## Gerar os pacotes
+
+O PyInstaller gera o pacote do sistema em que estiver sendo executado:
+
+```bash
+python -m pip install -r requirements-build.txt
+python scripts/build_release.py
+```
+
+O script lê `CompressPDF.spec`, gera o aplicativo em `dist/`, executa o teste do aplicativo empacotado e produz o arquivo, checksum e relatório em `release/`. A versão está em `app_version.py`.
+
+O teste empacotado inicializa a interface, comprime um PDF com texto e duas páginas, verifica o resultado e confirma o tratamento de um PDF inválido. A compressão continua em um processo separado, inclusive dentro do executável.
+
+O workflow `.github/workflows/release.yml` executa os testes e builds em Windows, Linux e macOS Intel/Apple Silicon. Ao receber uma tag `v*`, ele publica todos os arquivos juntos somente se os quatro builds passarem. A execução manual gera artefatos para conferência sem publicar um release.
+
+Para uma próxima versão, atualize `app_version.py` e `RELEASE_NOTES.md`, faça o commit e envie a tag correspondente:
+
+```bash
+git tag v1.0.1
+git push origin master v1.0.1
+```
+
+Os avisos dos componentes distribuídos estão em `THIRD_PARTY_NOTICES.md`.

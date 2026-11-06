@@ -3,3 +3,7 @@ __pycache__/
 .venv/
 venv/
 .idea/
+build/
+dist/
+release/
+build-*.log
